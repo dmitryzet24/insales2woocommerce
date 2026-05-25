@@ -1,0 +1,8 @@
+requests
+urllib3
+hvac
+pydantic
+email-validator
+boto3
+pandas
+pytest
