@@ -3,7 +3,7 @@ from typing import List
 from scripts.models import InSalesProduct
 
 class InSalesClient:
-    def __init__(self, credentioals: dict):
+    def __init__(self, credentials: dict):
         self.shop_url = credentials['shop_url'].strip('/')
         self.api_key = credentials['api_key']
         self.password = credentials['password']
@@ -25,7 +25,7 @@ class InSalesClient:
             validated_prosucts = []
 
             for item in raw_products:
-                prosuct = InSalesProduct(**item)
+                product = InSalesProduct(**item)
                 validated_prosucts.append(product)
 
             return validated_prosucts

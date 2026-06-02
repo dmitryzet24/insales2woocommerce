@@ -16,7 +16,7 @@ def run_extraction ():
     insales_secrets = vault.get_secret(path="insales_api")
 
     print("------Client initialization for InSales API------")
-    insales_client = InSalesClient (credentioals="insales_secrets")
+    insales_client = InSalesClient (credentials=insales_secrets)
 
     print("------Getting Products from InSales------")
     products = insales_client.get_products(page=1, per_page=50)
