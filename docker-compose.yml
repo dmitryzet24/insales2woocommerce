@@ -48,7 +48,7 @@ services:
     image: wordpress:latest
     container_name: wp_obrf
     ports:
-      - "8087:80"                    # Здесь нужно заменить: в системе стоят Cockpit и Pihole
+      - "8087:80"
     volumes:
       - wp_core_data:/var/www/html
     environment:

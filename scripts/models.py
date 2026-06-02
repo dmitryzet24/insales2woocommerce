@@ -5,11 +5,11 @@ from typing import List, Optional
 class InsalesVariant(BaseModel):
     id: int
     product_id: int
-    sku: Optional[str] = Field(default_None, description="Product SKU")
+    sku: Optional[str] = Field(default=None, description="Product SKU")
     price: float  = Field(description="Sell price")
     old_price: Optional[float] = Field(default=None, descrition="Old price (before discount)")
     quantity: int = Field(default=0, description="Whats left in the Wharehouse")
-    weight: Oprional[float] = Field(default=None, description=" Product weight")
+    weight: Optional[float] = Field(default=None, description=" Product weight")
 
 #Product Model of SCU from Insales
 class InSalesProduct(BaseModel):
@@ -24,7 +24,7 @@ class InSalesProduct(BaseModel):
 
     # URL helper
     @property
-    def main_image_url(self) -> Oprional[str]:
+    def main_image_url(self) -> Optional[str]:
         if self.images and 'original_url' in self.images[0]:
             return self.images[0]['original_url']
         return None

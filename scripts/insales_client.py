@@ -1,6 +1,6 @@
 import requests
 from typing import List
-from scripts.models import InsalesProduct
+from scripts.models import InSalesProduct
 
 class InSalesClient:
     def __init__(self, credentioals: dict):
@@ -10,7 +10,7 @@ class InSalesClient:
 
         self.base_url = f"https://{self.api_key}:{self.password}@{self.shop_url}/admin"
 
-    def get_products(self, page: int = 1, per_page: int = 50) -> List[InsalesProduct]:
+    def get_products(self, page: int = 1, per_page: int = 50) -> List[InSalesProduct]:
         url = f"{self.base_url}/products.json"
         params = {
             "page": page,
@@ -25,7 +25,7 @@ class InSalesClient:
             validated_prosucts = []
 
             for item in raw_products:
-                prosuct = InsalesProduct(**item)
+                prosuct = InSalesProduct(**item)
                 validated_prosucts.append(product)
 
             return validated_prosucts

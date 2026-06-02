@@ -11,10 +11,6 @@ class VaultClient:
             raise ConnectionError("Authorisation failed in HashiCorp Vault!")
 
     def get_secret(self, path: str) -> dict:
-        """
-        Получает секрет из KV-хранилища версии 2
-        path: имя секрета (например, 'insales_api' или 'woocommerce_api')
-        """
         try:
             response = self.client.secrets.kv.v2.read_secret_version(
                 mount_point='secret', 

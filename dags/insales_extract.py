@@ -1,22 +1,22 @@
 import sys
 import os
 
-sys.path.append(os.path.dirmane(os.path.dirname(od.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from scripts.vault.client import VaultClient
+from scripts.vault_client import VaultClient
 from scripts.insales_client import InSalesClient
 
 def run_extraction ():
     print("------Running Extraction Pipeline-------")
 
     print("Connectiong to HashiCorp Vault")
-    vault = VaultClient
+    vault = VaultClient()
 
     print ("------Getting Secrets From Vault ------")
     insales_secrets = vault.get_secret(path="insales_api")
 
     print("------Client initialization for InSales API------")
-    insales_client = InsalesClient (credentioals="insales_secrets")
+    insales_client = InSalesClient (credentioals="insales_secrets")
 
     print("------Getting Products from InSales------")
     products = insales_client.get_products(page=1, per_page=50)
@@ -31,3 +31,6 @@ def run_extraction ():
             print(f"  -> Вариант SKU: {variant.sku} | Цена: {variant.price} руб. | Остаток: {variant.quantity} шт.")
 
         print("-" * 40)
+
+if __name__ == "__main__":
+    run_extraction()
