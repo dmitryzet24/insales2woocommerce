@@ -58,8 +58,22 @@ services:
       WORDPRESS_DB_NAME: ${WP_DB_NAME}
     restart: unless-stopped
 
+  staging_db:
+    image: postgres:15-alpine
+    container_name: staging_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${STAGING_DB_NAME}
+      POSTGRES_USER: ${STAGING_DB_USER}
+      POSTGRES_PASSWORD: ${STAGING_DB_PASSWORD}
+    volumes:
+      - pg_staging_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
 volumes:
   minio_data:
   wp_db_data:
   wp_core_data:
+  pg_staging_data:
       

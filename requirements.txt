@@ -6,3 +6,4 @@ email-validator
 boto3
 pandas
 pytest
+psycopg2-binary
