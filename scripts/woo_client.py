@@ -8,12 +8,13 @@ class WooCommerceClient:
         print("------Client initialization for WooCommerce (Gold)------")
 
         self.wcapi = API(
-            url=credentials.get('url', 'http://localhost:8087'),
+            url="https://wpobrf.pulapula.dev",
             consumer_key=credentials.get('consumer_key'),
             consumer_secret=credentials.get('consumer_secret'),
             version="wc/v3",
-            timeout=30,
-            verify=False
+            query_string_auth=True,
+            wp_api=True,
+            is_ssl=False
         )
     
     def get_product_by_sku(self, sku: str):

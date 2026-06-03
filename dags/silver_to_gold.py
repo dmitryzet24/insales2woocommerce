@@ -13,7 +13,8 @@ def run_gold_sync():
     vault = VaultClient()
     db_secrets = vault.get_secret(path="staging_db")
     woo_secrets = vault.get_secret(path="woocommerce_api")
-
+    print("--- DEBUG: Секреты из Vault для WooCommerce ---")
+    print(woo_secrets)
     if not woo_secrets:
         print("[ERROR] getting secrets dailed using path 'secret/woocommerce_api'!")
         return
