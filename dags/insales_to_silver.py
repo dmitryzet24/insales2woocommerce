@@ -41,7 +41,7 @@ def run_silver_transformation():
     print(f"------Processing {len(products_data)} products to Silver Layer------")
     for prod in products_data:
         if not prod.get('sku'):
-            prod['sku'] = f"INKNOWN_INSALES-{prod['id']}"
+            prod['sku'] = f"UNKNOWN_INSALES-{prod['id']}"
 
             db.upsert_product_scd2(prod)
 
