@@ -8,13 +8,12 @@ from scripts.db_client import DBClient
 from scripts.woo_client import WooCommerceClient
 
 def run_gold_sync():
-    print("------Running Gold Syncronization (PostrgeSQL -> WooCommerce)")
+	print("------Running Gold Syncronization (PostrgeSQL -> WooCommerce)")
 
-    vault = VaultClient()
+	vault = VaultClient()
     db_secrets = vault.get_secret(path="staging_db")
     woo_secrets = vault.get_secret(path="woocommerce_api")
-    print("--- DEBUG: Секреты из Vault для WooCommerce ---")
-    print(woo_secrets)
+
     if not woo_secrets:
         print("[ERROR] getting secrets dailed using path 'secret/woocommerce_api'!")
         return
@@ -23,7 +22,7 @@ def run_gold_sync():
     db = DBClient(credentials=db_secrets)
     woo = WooCommerceClient(credentials=woo_secrets)
 
-    print("[READING] actual(relevant) data fron Silver Layer")
+    print("[READING] actual(relevant) data from Silver Layer")
     with db.conn.cursor(cursor_factory=None) as cursor:
         cursor.execute("""
             SELECT insales_id, sku, title, price

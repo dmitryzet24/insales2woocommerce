@@ -41,7 +41,6 @@ class DBClient:
         sku = product['sku']
         insales_id = product['id']
         title = product['title']
-
         price = float(product.get('price', 0.0) or 0.0)
         now = datetime.now()
 
