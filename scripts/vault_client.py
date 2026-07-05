@@ -1,14 +1,21 @@
 import os
 import hvac
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class VaultClient:
     def __init__(self):
-        self.vault_url = os.getenv("VAULT_ADDR", "http://localhost:8200")       # For local tests
-        self.vault_token = os.getenv("VAULT_TOKEN", "root_token_local")         # For local tests
+        self.vault_url = os.getenv("VAULT_ADDR")
+        self.vault_token = os.getenv("VAULT_TOKEN")
     
         self.client = hvac.Client(url=self.vault_url, token=self.vault_token) 
-        if not self.client.is_authenticated():
-            raise ConnectionError("Authorisation failed in HashiCorp Vault!")
+
+        try:
+            if not self.client.is_authenticated():
+                raise ConnectionError("Authorization failed in HashiCorp Vault! Check your token configuration.")
+        except Exception as e:
+            raise ConnectionError(f"Cannot connect to Vault server: {str(e)}")
 
     def get_secret(self, path: str) -> dict:
         try:
@@ -21,4 +28,4 @@ class VaultClient:
             raise RuntimeError(self._format_error(path, e))
 
     def _format_error(self, path: str, error: Exception) -> str:
-        return f"Error in Vault response '{path}' из Vault: {str(error)}"
+        return f"Error in Vault response '{path}' from Vault: {str(error)}"

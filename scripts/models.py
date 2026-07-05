@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import List, Optional
 
 # Modification Model of SCU from Insales
@@ -13,7 +13,7 @@ class InsalesVariant(BaseModel):
 
     @field_validator('old_price', mode='before')
     @classmethod
-    def prevent_none_prices(cls, v)
+    def prevent_none_prices(cls, v):
         return 0.0 if v is None else v
 
 #Product Model of SCU from Insales

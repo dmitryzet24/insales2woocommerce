@@ -1,7 +1,7 @@
 from woocommerce import API
 import urllib3
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)  # For local tests
 
 class WooCommerceClient:
     def __init__(self, credentials: dict):
@@ -14,7 +14,7 @@ class WooCommerceClient:
             version="wc/v3",
             query_string_auth=True,
             wp_api=True,
-            is_ssl=False
+            is_ssl=False # For local tests
         )
     
     def get_product_by_sku(self, sku: str):

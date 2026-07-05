@@ -8,3 +8,5 @@ pandas
 pytest
 psycopg2-binary
 woocommerce
+python-dotenv
+minio

@@ -4,14 +4,16 @@ services:
     image: hashicorp/vault:latest
     container_name: hashicorp_vault
     ports:
-      - "8200:8200"                                 #API & WEB UI
+      - "8200:8200"
+    volumes:
+      - ./vault/vault.hcl:/etc/vault/vault.hcl
+      - ./vault/data:/vault/data
     environment:
-      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN_ID}
-      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
-      VAULT_ADDR: "http://127.0.0.1:8200"
+      - VAULT_ADDR=http://127.0.0.1:8200
+      - VAULT_API_ADDR=http://127.0.0.1:8200
+    entrypoint: vault server -config=/etc/vault/vault.hcl
     cap_add:
       - IPC_LOCK                                    # Memory protection from Swapping
-    command: server -dev
     restart: unless-stopped
 
   minio:                                            # S3 Storage
