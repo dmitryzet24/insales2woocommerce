@@ -8,13 +8,18 @@ class InsalesVariant(BaseModel):
     sku: Optional[str] = Field(default=None, description="Product SKU")
     price: float  = Field(description="Sell price")
     old_price: Optional[float] = Field(default=None, description="Old price (before discount)")
-    quantity: int = Field(default=0, description="Whats left in the Wharehouse")
+    quantity: Optional[int] = Field(default=0, description="Whats left in the Wharehouse")
     weight: Optional[float] = Field(default=None, description=" Product weight")
 
     @field_validator('old_price', mode='before')
     @classmethod
     def prevent_none_prices(cls, v):
         return 0.0 if v is None else v
+
+    @field_validator('quantity', mode='before')
+    @classmethod
+    def prevent_none_quantity(cls, v):
+        return 0 if v is None else v
 
 #Product Model of SCU from Insales
 class InSalesProduct(BaseModel):

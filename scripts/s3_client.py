@@ -20,6 +20,13 @@ class S3Client:
         except:
             print(f"------Bucket '{self.bucket_name}' hasn't been found. Creating a new one...")
             self.s3.create_bucket(Bucket=self.bucket_name)
+        
+    def file_exists(self, file_path: str) -> bool:
+        try:
+            self.s3.head_object(Bucket=self.bucket_name, Key=file_path)
+            return True
+        except:
+            return False
 
     def upload_raw_json(self, data: list, file_path: str):
         print(f"------Uploading raw data to MinIO bucket: {self.bucket_name}------")
@@ -34,3 +41,9 @@ class S3Client:
             return file_path
         except Exception as e:
             raise RuntimeError(f"Error during upload to MinIO has emerged: {str(e)}")
+
+    # def upload_orders_partitioned(self, orders_data: list):
+    #     """
+    #     Automatically partitions orders by year/month/day
+    #     """
+

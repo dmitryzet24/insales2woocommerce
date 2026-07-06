@@ -15,7 +15,7 @@ from scripts.s3_client import S3Client
 def run_extraction ():
     print("------Running Extraction Pipeline-------")
 
-    print("Connectiong to HashiCorp Vault")
+    print("Connecting to HashiCorp Vault")
     vault = VaultClient()
 
     print ("------Getting Secrets From Vault ------")
@@ -37,6 +37,14 @@ def run_extraction ():
     total_products = 0
 
     while True:
+        target_file_path = f"insales/products/{current_date}/page_{page}.json"
+
+        if s3_client.file_exists(target_file_path):
+            print(f"Page {page} already exists in MinIO. Skipping HTTP request...")
+            page += 1
+            continue
+
+
         print(f"Fetching page {page}...")
         products = insales_client.get_products(page=page, per_page=per_page)
 
@@ -47,13 +55,11 @@ def run_extraction ():
         raw_products_dict = [p.model_dump() for p in products]
         total_products += len(raw_products_dict)
 
-        target_file_path = f"insales/products/{current_date}/page_{page}.json"
-
         s3_client.upload_raw_json(data=raw_products_dict, file_path=target_file_path)
         
         page += 1
 
-    print(f"-> Успешно скачано товаров: {total_products}")
+    print(f"-> Products successfully fetched: {total_products}")
     print("------------------\n")
 
 
