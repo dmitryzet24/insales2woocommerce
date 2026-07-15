@@ -9,8 +9,24 @@
 
 Medalion principle:
 - Bronze: Extracting data from InSales (Commercial ecommerce CRM) to S3 Data Lake
-- Silver: Preparing data for transition to Silver level (Postgres)
+- Silver: Preparing data for transition to Silver level (Postgres/Snowflake)
 - Gold: Importing data (orders, products, customers) to Woocommerce MySQL database.
+
+## Pipeline schema
+
+[InSales API] 
+       │
+       ▼  (Extraction: Airflow orchestrates PySpark)
+   [ AWS S3 (MiniO) ] (Raw JSON/CSV Landing Zone)
+       │
+       ▼  (Loading)
+  [ Snowflake ] (Raw Schemas)
+       │
+       ▼  (Transformation & Modeling: dbt)
+  [ Snowflake ] (Transformed / Cleaned schemas mapped to WooCommerce)
+       │
+       ▼  (Reverse ETL: Airflow/PySpark script calls WC REST API)
+[ WooCommerce Store ]
 
 ## Main Concepts
 
@@ -33,6 +49,11 @@ Medalion principle:
 ### Transactions & ACID
 
 ## Why is that important
+
+## Airflow Docker Environment
+If your Airflow will be in a separate Docker container than add
+    environment:
+        - VAULT_ADDR=http://hashicorp_vault:8200  # or http://host.docker.internal:8200
 
 
 

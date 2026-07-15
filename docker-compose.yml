@@ -14,6 +14,9 @@ services:
     entrypoint: vault server -config=/etc/vault/vault.hcl
     cap_add:
       - IPC_LOCK                                    # Memory protection from Swapping
+    networks:
+      - woocommerce_net     # talks to this stack
+      - airflow_net
     restart: unless-stopped
 
   minio:                                            # S3 Storage
@@ -28,6 +31,8 @@ services:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD} 
     command: server /data --console-address ":9001"
+    networks:
+      - woocommerce_net     # talks to this stack
     restart: unless-stopped
 
   wordpress_db:
@@ -42,6 +47,8 @@ services:
       MYSQL_DATABASE: ${WP_DB_NAME}
       MYSQL_USER: ${WP_DB_USER}
       MYSQL_PASSWORD: ${WP_DB_PASSWORD}
+    networks:
+      - woocommerce_net     # talks to this stack
     restart: unless-stopped
 
   wordpress:
@@ -58,6 +65,8 @@ services:
       WORDPRESS_DB_USER: ${WP_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD}
       WORDPRESS_DB_NAME: ${WP_DB_NAME}
+    networks:
+      - woocommerce_net     # talks to this stack
     restart: unless-stopped
 
   staging_db:
@@ -71,6 +80,9 @@ services:
       POSTGRES_PASSWORD: ${STAGING_DB_PASSWORD}
     volumes:
       - pg_staging_data:/var/lib/postgresql/data
+    networks:
+    - woocommerce_net     # talks to this stack
+    - airflow_net         # talks to Airflow too
     restart: unless-stopped
 
 volumes:
@@ -78,4 +90,10 @@ volumes:
   wp_db_data:
   wp_core_data:
   pg_staging_data:
-      
+
+networks:
+  woocommerce_net:
+    name: woocommerce_net
+  airflow_net:
+    external: true
+    name: airflow_default

@@ -12,7 +12,7 @@ class DBClient:
         db_password=credentials.get('password') or ''
         db_user = credentials.get('user') or 'db_data_engineer'
         
-        print(f"-> Подключаемся к базе '{db_name}' под пользователем '{db_user}' на {db_host}:{db_port}")
+        print(f"-> Connecting to database '{db_name}' as user '{db_user}' on {db_host}:{db_port}")
         dsn = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 
 

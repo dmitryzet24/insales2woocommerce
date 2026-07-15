@@ -1,6 +1,6 @@
 import requests
 from typing import List
-from scripts.models import InSalesProduct
+from models.models import InSalesProduct
 
 class InSalesClient:
     def __init__(self, credentials: dict):

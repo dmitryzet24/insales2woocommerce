@@ -9,7 +9,7 @@ class S3Client:
 
         self.s3 = boto3.client(
                 's3',
-                endpoint_url=credentials.get('endpoint_url', 'http://localhost:9000'),
+                endpoint_url=credentials.get('endpoint_url', 'http://host.docker.internal:9000'),
                 aws_access_key_id=credentials['access_key'],
                 aws_secret_access_key=credentials['secret_key']
         )
