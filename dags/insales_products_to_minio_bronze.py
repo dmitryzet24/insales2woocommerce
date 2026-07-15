@@ -43,7 +43,7 @@ def run_extraction(**context):
 
         if s3_client.file_exists(target_file_path):
             print(f"Page {page} already exists in MinIO. Skipping HTTP request...")
-            # page += 1
+            page += 1
             continue
 
         print(f"Fetching page {page}...")
@@ -69,12 +69,10 @@ default_args = {
     "depends_on_past": False,
     "email_on_failure": False,
     "email_on_retry": False,
-    "retries": 0,
-    "retry_delay": timedelta(minutes=5),
 }
 
 with DAG(
-    dag_id="insales_to_minio_bronze",
+    dag_id="insales_products_to_minio_bronze",
     default_args=default_args,
     description="Extract products from InSales API and upload to MinIO Bronze layer",
     schedule="@daily",

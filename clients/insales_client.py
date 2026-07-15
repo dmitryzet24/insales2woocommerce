@@ -35,26 +35,35 @@ class InSalesClient:
         except Exception as e:
             raise RuntimeError(f"Validation error: {str(e)}")
 
-    def get_orders(self, page: int = 1, per_page: int = 100) -> List[InSalesProduct]:
-        url = f"{self.base_url}/orders.json"
-        params = {
-            "page": page,
-            "per_page": per_page
-        }
-
-        try:
-            response = request.get(url, params=params, timeout=10)
+    def get_orders(self, date: str, page: int = 1, per_page: int = 100):
+            """
+            Получает список заказов, ИЗМЕНЕННЫХ или СОЗДАННЫХ в конкретную дату.
+            """
+            url = f"{self.base_url}/admin/orders.json"
+            
+            # Фильтруем строго по дате ОБНОВЛЕНИЯ заказа
+            params = {
+                "page": page,
+                "per_page": per_page,
+                "updated_at_from": f"{date} 00:00:00",
+                "updated_at_to": f"{date} 23:59:59"
+            }
+            
+            response = requests.get(url, params=params)
+            
+            if response.status_code == 404:
+                return []
+                
             response.raise_for_status()
-
-            raw_products = response.json()
+            return response.json()
 
             # validated_prosucts = []
             # for item in raw_products:
             #     product = InSalesProduct(**item)
             #     validated_prosucts.append(product)
 
-            return raw_products
-        except requests.exceptions.RequestException as e:
-            raise RuntimeError (f"API request error: {str(e)}")
-        except Exception as e:
-            raise RuntimeError(f"Validation error: {str(e)}")
+        #     return raw_products
+        # except requests.exceptions.RequestException as e:
+        #     raise RuntimeError (f"API request error: {str(e)}")
+        # except Exception as e:
+        #     raise RuntimeError(f"Validation error: {str(e)}")
